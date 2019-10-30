@@ -1,4 +1,5 @@
 // Création d'un nouveau modèle qui hérite du modèle doughnut
+
 Chart.defaults.doughnutWithText = Chart.defaults.doughnut;
 
 Chart.controllers.doughnutWithText = Chart.controllers.doughnut.extend({

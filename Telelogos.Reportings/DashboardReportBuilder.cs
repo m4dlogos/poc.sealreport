@@ -282,7 +282,6 @@ namespace Telelogos.Reportings
       {
          // Execute the report
          _report.RenderOnly = true;
-         _report.ResultFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Reporting", _report.ResultFileName);
          _report.Format = ReportFormat.html;
          var execution = new ReportExecution() { Report = _report };
          execution.Execute();

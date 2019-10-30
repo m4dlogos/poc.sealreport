@@ -244,6 +244,8 @@ namespace Seal.Model
             {
                 result = new Repository();
                 result.Init(path);
+                // AS 30/10/2019 : pour pouvoir indiquer un autre dossier que celui du Settings et pcq c'est l'instance qui est utilisé ailleurs
+                _instance = result;
             }
             if (result == null) throw new Exception(string.Format("Unable to find or create a Repository from '{0}'.", path));
 
