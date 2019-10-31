@@ -283,6 +283,7 @@ namespace Telelogos.Reportings
          // Execute the report
          _report.RenderOnly = true;
          _report.Format = ReportFormat.html;
+
          var execution = new ReportExecution() { Report = _report };
          execution.Execute();
          while (_report.IsExecuting) System.Threading.Thread.Sleep(100);

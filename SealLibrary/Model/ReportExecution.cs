@@ -1433,7 +1433,9 @@ namespace Seal.Model
             foreach (var page in model.Pages)
             {
                 //Sort also series axis
-                if (model.HasSerie)
+                // AS 31/10/2019 : La méthode List<T>.Sort est instable lorsqu'il n'y a pas de tri à effectuer
+                // @see https://docs.microsoft.com/fr-fr/dotnet/api/system.collections.generic.list-1.sort?view=netframework-4.8
+                if (model.HasSerie && model.HasFinalSortOrder)
                 {
                     page.PrimaryXDimensions.Sort(ResultCell.CompareCells);
                     page.SecondaryXDimensions.Sort(ResultCell.CompareCells);

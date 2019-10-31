@@ -360,6 +360,18 @@ namespace Seal.Model
             }
         }
 
+        // AS 31/10/2019 : Pour ne pas avoir à trier lorsque ce n'est pas nécessaire car la méthode List<T>.Sort est instable
+        // @see ReportExecution.finalSort
+        // Retourne true si un des éléments possède un tri
+        [XmlIgnore]
+        public bool HasFinalSortOrder
+        {
+            get
+            {
+                return Elements.Exists(i => !string.IsNullOrEmpty(i.FinalSortOrder));
+            }
+        }
+
         [XmlIgnore]
         public bool HasPrimaryYAxis
         {
