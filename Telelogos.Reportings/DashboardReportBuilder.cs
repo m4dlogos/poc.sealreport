@@ -290,6 +290,7 @@ namespace Telelogos.Reportings
 
          // Generate the report
          var outputFile = execution.GeneratePrintResult();
+         
          return outputFile;
       }
    }

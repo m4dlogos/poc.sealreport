@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Codaxy.WkHtmlToPdf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +14,7 @@ namespace Telelogos.Reportings.ConsoleApp
         static void Main(string[] args)
         {
 		    // Avec la librairie Telelogos.Reportings
-		    Telelogos.Reportings.Settings.RepositoryPath = Path.Combine(Path.GetFullPath(@"..\..\..\"), "Repository"); // remonter au dossier de la solution
+		      Telelogos.Reportings.Settings.RepositoryPath = Path.Combine(Path.GetFullPath(@"..\..\..\"), "Repository"); // remonter au dossier de la solution
             var builder = new Telelogos.Reportings.DashboardReportBuilder();
             var director = new Telelogos.Reportings.DashboardReportBuilderDirector();
             var data = new Telelogos.Reportings.DashboardStatistics();
@@ -21,8 +22,20 @@ namespace Telelogos.Reportings.ConsoleApp
             director.BuildReport(builder, data);
             var reportFile = builder.GenerateReport();
 
-            // Show the report
-            Process.Start(reportFile);
+         PdfConvert.ConvertHtmlToPdf(new PdfDocument
+         {
+            Html = File.ReadAllText(reportFile),
+            HeaderLeft = "[title]",
+            HeaderRight = "[date] [time]",
+            FooterCenter = "Page [page] of [topage]"
+
+         }, new PdfOutput
+         {
+            OutputFilePath = "dashboard-report.pdf"
+         });
+
+         // Show the report
+         Process.Start(reportFile);
         }
 
         static DashboardStatistics DATA_Statistics = new DashboardStatistics
