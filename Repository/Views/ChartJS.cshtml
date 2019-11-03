@@ -30,6 +30,7 @@
             <canvas id="@chartId" @Raw(Helper.AddIfNotEmpty("width='", view.GetValue("chartjs_width"), "'")) @Raw(Helper.AddIfNotEmpty("height='", view.GetValue("chartjs_height"), "'"))></canvas>
         </div>
         <script>
+	
             $(document).ready(function () {
             var ctx = $("#@chartId");
             var colors = d3.scale.category@((reportModel.ExecChartJSType == "pie" || reportModel.ExecChartJSType == "polarArea" ? page.PrimaryXDimensions.Count : page.Series.Count) <= 10 ? "1" : "2")0().range();
@@ -184,11 +185,6 @@
                 </text>
                 }
             };
-
-				@if (view.GetBoolValue("chartjs_doughnut_with_text"))
-				{
-					chartType = "doughnutWithText";
-				}
 				
                 var @chartId = new Chart(ctx, {
                     type: '@chartType',

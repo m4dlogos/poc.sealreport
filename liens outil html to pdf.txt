@@ -1,0 +1,58 @@
+https://archive.codeplex.com/?p=hiqpdf
+https://github.com/tuespetre/TuesPechkin
+https://github.com/codaxy/wkhtmltopdf
+https://github.com/kblok/puppeteer-sharp
+https://github.com/webgio/Rotativa
+https://github.com/vilppu/OpenHtmlToPdf
+https://github.com/MrRio/jsPDF
+https://phantomjs.org/
+https://archive.codeplex.com/?p=winnovative
+https://www.nuget.org/packages/wnvhtmlconvert/
+
+// Pour faciliter la création de chart en MVC
+https://www.martinobordin.it/Chart.Mvc/
+https://programmer.help/blogs/integrated-application-of-chart.js-and-asp.net-mvc.html
+https://www.c-sharpcorner.com/article/generating-runtime-chart-in-mvc-using-chart-js/
+https://www.c-sharpcorner.com/article/charts-in-asp-net-mvc-using-chart-js/
+https://playground.jsreport.net/w/anon/SkcQLLOGl-3
+
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js'></script>
+  </head>
+  <body>
+    
+    <canvas id='myChart' style="margin-top:30px"></canvas>
+    
+    <script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['M', 'T'],
+        datasets: [{
+          label: 'apples',
+          data: [12, 19],
+          backgroundColor: ['red', 'green']
+        }]
+      },
+      options: {
+        circumference: 1.22*Math.PI,
+        rotation: 0.5*Math.PI,
+            animation: {
+                onComplete: function () {
+                    // set the PDF printing trigger when the animation is done
+                    // to have this working, the phantom-pdf menu in the left must
+                    // have the wait for printing trigger option selected
+                    window.JSREPORT_READY_TO_START = true
+                }
+            }
+        }
+    });
+    </script>    
+  </body>
+</html>
+
+
+

@@ -1,5 +1,4 @@
-﻿using Codaxy.WkHtmlToPdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -20,22 +19,19 @@ namespace Telelogos.Reportings.ConsoleApp
             var data = new Telelogos.Reportings.DashboardStatistics();
             Telelogos.Reportings.Helper.ShallowCopyValues(DATA_Statistics, data);
             director.BuildReport(builder, data);
-            var reportFile = builder.GenerateReport();
 
-         PdfConvert.ConvertHtmlToPdf(new PdfDocument
-         {
-            Html = File.ReadAllText(reportFile),
-            HeaderLeft = "[title]",
-            HeaderRight = "[date] [time]",
-            FooterCenter = "Page [page] of [topage]"
+			Console.WriteLine("Format ? (html/pdf): ");
+			var format = Console.ReadLine();
+            var reportFile = builder.GenerateReport(format == "html" ? ReportFormat.html : ReportFormat.pdf);
 
-         }, new PdfOutput
-         {
-            OutputFilePath = "dashboard-report.pdf"
-         });
+				var destFile = Path.Combine(Directory.GetParent("../../").FullName, Path.GetFileName(reportFile));
+				File.Copy(reportFile, destFile);
 
-         // Show the report
-         Process.Start(reportFile);
+				// Show the report
+				Process.Start(destFile);
+
+			Console.WriteLine("Génération terminée !");
+			Console.ReadLine();
         }
 
         static DashboardStatistics DATA_Statistics = new DashboardStatistics

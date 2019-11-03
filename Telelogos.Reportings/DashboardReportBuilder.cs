@@ -278,18 +278,18 @@ namespace Telelogos.Reportings
       }
 
       // Generate the report and returns the file path
-      public string GenerateReport()
+      public string GenerateReport(ReportFormat format = ReportFormat.html)
       {
          // Execute the report
          _report.RenderOnly = true;
-         _report.Format = ReportFormat.html;
+         _report.Format = Seal.Model.ReportFormat.print;
 
          var execution = new ReportExecution() { Report = _report };
          execution.Execute();
          while (_report.IsExecuting) System.Threading.Thread.Sleep(100);
 
          // Generate the report
-         var outputFile = execution.GeneratePrintResult();
+         var outputFile = (format == ReportFormat.html) ? execution.GeneratePrintResult() : execution.GeneratePDFResult();
          
          return outputFile;
       }
