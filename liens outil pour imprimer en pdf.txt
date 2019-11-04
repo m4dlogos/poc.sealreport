@@ -1,0 +1,4 @@
+https://github.com/frogmorecs/RawPrint
+https://www.ghostscript.com/
+=> @see https://stackoverflow.com/questions/20524323/print-pdf-using-ghostscript
+http://www.pdfsharp.net/MainPage.ashx

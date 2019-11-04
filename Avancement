@@ -1,0 +1,16 @@
+== Prise en main de SealReport: compréhension du modèle pour générer tout depuis le code sans le designer (deux petites modifications dans le code de SealReport ont été nécessaires) => OK
+== Ecriture d'un plugin de ChartJS pour avoir le même graphique que dans le Dashboard de M4D => OK
+== Génération du pdf avec SealPdfConverter ne fonctionne pas totalement avec le plugin CharJS (résoluble par config ?)
+== L'utilisation de SealReport dans une appli web a nécessité de gérer les chemins différemment => OK
+== Implémentation de la génération d'un rapports dans M4D (le dashboard en pdf ou html) avec l'outil développé => OK
+== Performance: génération lente la première fois car les vues doivent être compilées par RazorEngine => peut-on améliorer les performances ? A priori oui en précompilant toutes les vues à la création de la repository (à tester).
+
+
+== Avantages de SealReport
+=== Création des vues en ASP.NET MVC => flexible et compatible avec les technologies utilisées chez Telelogos
+=== Outil suffisamment riche pour faire beaucoup de types de rapports soit en mode autonome (sans SQL) soit relié à une BDD
+=== Le modèle est celui des tableaux croisés dynamiques de Excel => facile pour se le représenter
+
+== Inconvénients de SealReport
+=== Performance ?
+=== Génération des Pdfs ?

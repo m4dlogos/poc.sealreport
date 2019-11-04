@@ -44,6 +44,11 @@ namespace Telelogos.Reportings
             repository = Repository.Create();
          }
 
+         if (!string.IsNullOrEmpty(Settings.WebApplicationPath))
+         {
+            repository.WebApplicationPath = Settings.WebApplicationPath;
+         }
+
          return repository;
       }
    }

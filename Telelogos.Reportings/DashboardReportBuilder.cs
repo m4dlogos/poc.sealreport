@@ -1,9 +1,12 @@
 ﻿using Seal.Converter;
 using Seal.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using Telelogos.MediaContact.SharedTools.Helpers;
+using Telelogos.MediaContact.SharedTools.Models;
 
 namespace Telelogos.Reportings
 {
@@ -149,6 +152,7 @@ namespace Telelogos.Reportings
          AddModel(MODEL_CONFORMITY);
          AddModel(MODEL_CONNECTION);
          AddModel(MODEL_UPDATE);
+         AddTableModel();
       }
 
       // Fill the result table
@@ -157,6 +161,7 @@ namespace Telelogos.Reportings
          FillResult(MODEL_CONFORMITY, table);
          FillResult(MODEL_CONNECTION, table);
          FillResult(MODEL_UPDATE, table);
+         FillResult("Table", table);
       }
 
       // Fill the result table for the model
@@ -168,15 +173,22 @@ namespace Telelogos.Reportings
          var model = _report.Models.FirstOrDefault(m => m.Name == modelName);
          if (model != null)
          {
-            var filter = GeModeltFilter(modelName);
-            var resultTable = table.Clone();
-
-            foreach (var row in table.Select(filter))
+            if (modelName != "Table")
             {
-               resultTable.ImportRow(row);
-            }
+               var filter = GeModeltFilter(modelName);
+               var resultTable = table.Clone();
 
-            model.ResultTable = resultTable;
+               foreach (var row in table.Select(filter))
+               {
+                  resultTable.ImportRow(row);
+               }
+
+               model.ResultTable = resultTable;
+            }
+            else
+            {
+               model.ResultTable = table;
+            }
          }
       }
 
@@ -195,6 +207,42 @@ namespace Telelogos.Reportings
          filter += ")";
 
          return filter;
+      }
+
+      protected void AddTableModel()
+      {
+         if (_report == null)
+            CreateReport();
+
+         var model = _report.AddModel(false);
+         model.Name = "Table";
+
+         var master = this.MasterTable;
+         var column = master.Columns.FirstOrDefault(c => c.Name == COLUMN_STATISTIC);
+         if (column != null)
+         {
+            var element = ReportElement.Create();
+            element.MetaColumnGUID = column.GUID;
+            element.PivotPosition = PivotPosition.Row;
+            element.SerieSortType = SerieSortType.None;
+            element.SortOrder = SortOrderConverter.kNoSortKeyword;
+            element.DisplayName = "Statistique";
+            model.Elements.Add(element);
+         }
+
+         column = master.Columns.FirstOrDefault(c => c.Name == COLUMN_VALUE);
+         if (column != null)
+         {
+            var element = ReportElement.Create();
+            element.MetaColumnGUID = column.GUID;
+            element.PivotPosition = PivotPosition.Data;
+            element.SerieSortType = SerieSortType.None;
+            element.SortOrder = SortOrderConverter.kNoSortKeyword;
+            element.DisplayName = "Nombre de players";
+            model.Elements.Add(element);
+         }
+
+         model.InitReferences();
       }
 
       // Add a model to the report
@@ -249,7 +297,7 @@ namespace Telelogos.Reportings
 
          var containerView = _report.AddChildView(rootView, "Container");
          containerView.InitParameters(false);
-         containerView.Parameters.FirstOrDefault(p => p.Name == "grid_layout").Value = "col-sm-4;col-sm-4;col-sm-4";
+         containerView.Parameters.FirstOrDefault(p => p.Name == "grid_layout").Value = "col-sm-4;col-sm-4;col-sm-4\ncol-sm-4";
 
          foreach (var model in _report.Models)
          {
@@ -266,15 +314,22 @@ namespace Telelogos.Reportings
          modelView.Name = model.Name;
          modelView.ModelGUID = model.GUID;
 
-         var chartJSView = _report.AddChildView(modelView, ReportViewTemplate.ChartJSName);
+         if (model.Name != "Table")
+         {
+            var chartJSView = _report.AddChildView(modelView, ReportViewTemplate.ChartJSName);
 
-         chartJSView.InitParameters(false);
-         chartJSView.GetParameter("chartjs_doughnut").BoolValue = true;
-         chartJSView.GetParameter("chartjs_show_legend").BoolValue = true;
-         chartJSView.GetParameter("chartjs_legend_position").TextValue = "bottom";
-         chartJSView.GetParameter("chartjs_colors").Value = Colors[modelView.Name];
-         chartJSView.GetParameter("chartjs_options_circumference").NumericValue = 225; // 1.25*PI
-         chartJSView.GetParameter("chartjs_options_rotation").NumericValue = 90; // 0.5*PI
+            chartJSView.InitParameters(false);
+            chartJSView.GetParameter("chartjs_doughnut").BoolValue = true;
+            chartJSView.GetParameter("chartjs_show_legend").BoolValue = true;
+            chartJSView.GetParameter("chartjs_legend_position").TextValue = "bottom";
+            chartJSView.GetParameter("chartjs_colors").Value = Colors[modelView.Name];
+            chartJSView.GetParameter("chartjs_options_circumference").NumericValue = 225; // 1.25*PI
+            chartJSView.GetParameter("chartjs_options_rotation").NumericValue = 90; // 0.5*PI
+         }
+         else
+         {
+            _report.AddChildView(modelView, ReportViewTemplate.DataTableName);
+         }
       }
 
       // Generate the report and returns the file path
@@ -292,6 +347,25 @@ namespace Telelogos.Reportings
          var outputFile = (format == ReportFormat.html) ? execution.GeneratePrintResult() : execution.GeneratePDFResult();
          
          return outputFile;
+      }
+
+      // Send the email with the report as attached file
+      // TODO: déplacer ce code dans une classe plus appropriée
+      public void SendEMail(string filePath)
+      {
+         try
+         {
+            var attachement = filePath;
+            var body = "Voici votre rapport journalier !";
+            var helper = new MailHelper();
+            var message = helper.GetMailMessage("dev.telelogos@gmail.com", "aseguin@telelogos.com", null, null, "[M4D] Rapport de conformité du " + DateTime.Today.ToLongDateString(), body, attachement);
+            var config = new SmtpConfiguration { Host = "smtp.gmail.com", Password = "!telelogos2009", User = "dev.telelogos@gmail.com", Port = 465, UseSecureSocket = true };
+            helper.SendMail(config, message);
+         }
+         catch (Exception ex)
+         {
+            
+         }
       }
    }
 }

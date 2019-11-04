@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,7 +26,9 @@ namespace Telelogos.Reportings.ConsoleApp
             var reportFile = builder.GenerateReport(format == "html" ? ReportFormat.html : ReportFormat.pdf);
 
 				var destFile = Path.Combine(Directory.GetParent("../../").FullName, Path.GetFileName(reportFile));
-				File.Copy(reportFile, destFile);
+				File.Copy(reportFile, destFile, true);
+
+         builder.SendEMail(destFile);
 
 				// Show the report
 				Process.Start(destFile);
@@ -55,35 +58,35 @@ namespace Telelogos.Reportings.ConsoleApp
 
         static void sendEmail(string file)
         {
-            //try
-            //{
-            //   var device = OutputEmailDevice.Create();
-            //   device.Server = "smtp3";
-            //   device.Port = 25;
-            //   device.UserName = "";
-            //   device.Password = "";
-            //   device.SenderEmail = "aseguin@telelogos.com";
+         try
+         {
+            //var device = OutputEmailDevice.Create();
+            //device.Server = "smtp3";
+            //device.Port = 25;
+            //device.UserName = "";
+            //device.Password = "";
+            //device.SenderEmail = "aseguin@telelogos.com";
 
-            //   var from = "aseguin@telelogos.com";
-            //   var to = "aseguin@telelogos.com";
-            //   MailMessage message = new MailMessage(from, to);
-            //   message.From = new MailAddress(Helper.IfNullOrEmpty(from, device.SenderEmail));
-            //   device.AddEmailAddresses(message.To, to);
-            //   message.Subject = "M4D - Rapport de conformité du " + DateTime.Now.ToLongDateString();
-            //   message.Body = "Test d'envoie du rapport de conformité";
-            //   message.Attachments.Insert(0, new Attachment(file));
+            //var from = "aseguin@telelogos.com";
+            //var to = "aseguin@telelogos.com";
+            //MailMessage message = new MailMessage(from, to);
+            //message.From = new MailAddress(Helper.IfNullOrEmpty(from, device.SenderEmail));
+            //device.AddEmailAddresses(message.To, to);
+            //message.Subject = "M4D - Rapport de conformité du " + DateTime.Now.ToLongDateString();
+            //message.Body = "Test d'envoie du rapport de conformité";
+            //message.Attachments.Insert(0, new Attachment(file));
 
-            //   device.SmtpClient.Send(message);
-            //   MailMessage message = new MailMessage(from, to);
-            //   message.Subject = "M4D - Rapport de conformité du " + DateTime.Now.ToLongDateString();
-            //   message.Body = "Test d'envoie du rapport de conformité";
-            //   var smtp = new SmtpClient(device.Server, device.Port);
-            //   smtp.Send(message);
-            //}
-            //catch (Exception emailEx)
-            //{
-            //   Helper.WriteLogEntryScheduler(EventLogEntryType.Error, "Error got trying sending notification email.\r\n{0}", emailEx.Message);
-            //}
-        }
+            //device.SmtpClient.Send(message);
+            //MailMessage message = new MailMessage(from, to);
+            //message.Subject = "M4D - Rapport de conformité du " + DateTime.Now.ToLongDateString();
+            //message.Body = "Test d'envoie du rapport de conformité";
+            //var smtp = new SmtpClient(device.Server, device.Port);
+            //smtp.Send(message);
+         }
+         catch (Exception emailEx)
+         {
+            //Helper.WriteLogEntryScheduler(EventLogEntryType.Error, "Error got trying sending notification email.\r\n{0}", emailEx.Message);
+         }
+      }
     }
 }
