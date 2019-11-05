@@ -17,13 +17,12 @@ namespace Telelogos.Reportings
       // Build the report
       public void BuildReport(DashboardReportBuilder builder, DashboardStatistics statistics)
       {
-         var resultTable = builder.BuildResultTable(statistics);
          builder.CreateRepository();
-         builder.AddSource(resultTable);
+         builder.AddSource();
          builder.CreateReport();
-         builder.AddModels();
-         builder.AddViews();
-         builder.FillResultTable(resultTable);
+         builder.AddModel();
+         builder.AddView();
+         builder.FillResultTable(statistics);
       }
    }
 }

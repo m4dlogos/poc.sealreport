@@ -11,11 +11,9 @@ using Telelogos.MediaContact.SharedTools.Models;
 namespace Telelogos.Reportings
 {
    // Class that implements the dashboard report generation
-   public class DashboardReportBuilder
+   public class DashboardReportBuilder : NoSqlReportBuilder
    {
-      protected Repository _repository;
-      protected Report _report;
-
+      #region Constantes
       public const string GREEN = "#10BE5D";
       public const string RED = "#EA6153";
       public const string ORANGE = "#FD990B";
@@ -24,12 +22,15 @@ namespace Telelogos.Reportings
       public const string MODEL_CONFORMITY = "Conformity Model";
       public const string MODEL_CONNECTION = "Connection Model";
       public const string MODEL_UPDATE = "Update Model";
+      public const string MODEL_DATATABLE = "DataTable";
       public const string STAT_CONFORM = "Conforme";
       public const string STAT_NOT_CONFORM = "Non conforme";
       public const string STAT_OK = "Connecté";
       public const string STAT_UNREACHABLE = "Injoignable";
       public const string STAT_UP_TO_DATE = "A jour";
       public const string STAT_NOT_UP_TO_DATE = "Non à jour";
+      #endregion
+
 
       // The colors by model
       public static Dictionary<string, string> Colors = new Dictionary<string, string>
@@ -52,252 +53,199 @@ namespace Telelogos.Reportings
       {
       }
 
-      // Create the repository with no sources
-      public void CreateRepository()
-      {
-         _repository = Helper.CreateRepository();
-         _repository.Sources.Clear();
-      }
-
       // Build and returns the result table
-      public DataTable BuildResultTable(DashboardStatistics statistics)
+      public override void BuildResultTable()
       {
-         var resultTable = new DataTable();
-         resultTable.Columns.Add(new DataColumn(COLUMN_STATISTIC, typeof(string)));
-         resultTable.Columns.Add(new DataColumn(COLUMN_VALUE, typeof(int)));
-         resultTable.Rows.Add(STAT_CONFORM, statistics.PlayersConformCount);
-         resultTable.Rows.Add(STAT_NOT_CONFORM, statistics.PlayersNotConformCount);
-         resultTable.Rows.Add(STAT_OK, statistics.PlayersOkCount);
-         resultTable.Rows.Add(STAT_UNREACHABLE, statistics.PlayersUnreachableCount);
-         resultTable.Rows.Add(STAT_UP_TO_DATE, statistics.PlayersUpToDateCount);
-         resultTable.Rows.Add(STAT_NOT_UP_TO_DATE, statistics.PlayersNotUpToDateCount);
+         // Vérifier si la table contient déjà les colonnes
+         if (_resultTable.Columns.Count > 0)
+            return;
 
-         return resultTable;
-      }
-
-      // Add the source to the repository as the default source
-      public void AddSource(DataTable table)
-      {
-         if (_repository == null)
-            CreateRepository();
-
-         var source = MetaSource.Create(_repository);
-         source.Name = "Telelogos Data Source";
-         source.IsNoSQL = true;
-         source.IsDefault = true;
-
-         AddMasterTable(source, table);
-
-         _repository.Sources.All(s => s.IsDefault = false);
-         _repository.Sources.Add(source);
+         _resultTable.Columns.Add(new DataColumn(COLUMN_STATISTIC, typeof(string)));
+         _resultTable.Columns.Add(new DataColumn(COLUMN_VALUE, typeof(int)));
       }
 
       // Create the report
-      public void CreateReport()
+      public override void CreateReport()
       {
-         if (_repository == null)
-            CreateRepository();
+         base.CreateReport();
 
-         _report = Report.Create(_repository);
          _report.DisplayName = "Dashboard Report";
          // Clear default objects created by SealReport
          _report.Views.Clear();
          _report.Models.Clear();
       }
 
-      // Add the master table to the source from the input table
-      protected void AddMasterTable(MetaSource source, DataTable table)
-      {
-         // Remove the master tables
-         source.MetaData.Tables.RemoveAll(t => t.Alias == MetaData.MasterTableName);
-
-         var master = MetaTable.Create();
-         master.DynamicColumns = true;
-         master.IsEditable = false;
-         master.Alias = MetaData.MasterTableName;
-         master.Source = source;
-
-         foreach (DataColumn column in table.Columns)
-         {
-            var metaColumn = MetaColumn.Create(column.ColumnName);
-            metaColumn.Source = source;
-            metaColumn.DisplayName = Seal.Helpers.Helper.DBNameToDisplayName(column.ColumnName.Trim());
-            metaColumn.Category = "Master";
-            metaColumn.DisplayOrder = master.GetLastDisplayOrder();
-            metaColumn.Type = Seal.Helpers.Helper.NetTypeConverter(column.DataType);
-            metaColumn.SetStandardFormat();
-
-            master.Columns.Add(metaColumn);
-         }
-
-         source.MetaData.Tables.Add(master);
-      }
-
-      // Get the master table
-      protected MetaTable MasterTable
-      {
-         get
-         {
-            var src = _repository.Sources.FirstOrDefault(s => s.MetaData.MasterTable != null);
-            if (src != null)
-               return src.MetaData.MasterTable;
-
-            return null;
-         }
-      }
-
       // Add the models
-      public void AddModels()
+      public override void AddModel()
       {
          AddModel(MODEL_CONFORMITY);
          AddModel(MODEL_CONNECTION);
          AddModel(MODEL_UPDATE);
-         AddTableModel();
+         AddModel(MODEL_DATATABLE);
       }
 
-      // Fill the result table
-      public void FillResultTable(DataTable table)
+      // Fill the result table of each model
+      public override void FillResultTable<T>(T data)
       {
-         FillResult(MODEL_CONFORMITY, table);
-         FillResult(MODEL_CONNECTION, table);
-         FillResult(MODEL_UPDATE, table);
-         FillResult("Table", table);
+         var statistics = data as DashboardStatistics;
+         if (statistics == null)
+            return;
+         if (_report == null)
+            return;
+
+         foreach (var model in _report.Models)
+            FillResultTable(model, statistics);
       }
 
       // Fill the result table for the model
-      protected void FillResult(string modelName, DataTable table)
+      protected void FillResultTable(ReportModel model, DashboardStatistics statistics)
       {
-         if (_report == null)
-            CreateReport();
+         if (model == null)
+            return;
 
-         var model = _report.Models.FirstOrDefault(m => m.Name == modelName);
-         if (model != null)
+         var resultTable = _resultTable.Clone();
+
+         switch (model.Name)
          {
-            if (modelName != "Table")
-            {
-               var filter = GeModeltFilter(modelName);
-               var resultTable = table.Clone();
-
-               foreach (var row in table.Select(filter))
+            case MODEL_CONFORMITY:
                {
-                  resultTable.ImportRow(row);
+                  resultTable.Rows.Add(STAT_CONFORM, statistics.PlayersConformCount);
+                  resultTable.Rows.Add(STAT_NOT_CONFORM, statistics.PlayersNotConformCount);
                }
-
-               model.ResultTable = resultTable;
-            }
-            else
-            {
-               model.ResultTable = table;
-            }
+               break;
+            case MODEL_CONNECTION:
+               {
+                  resultTable.Rows.Add(STAT_OK, statistics.PlayersOkCount);
+                  resultTable.Rows.Add(STAT_UNREACHABLE, statistics.PlayersUnreachableCount);
+               }
+               break;
+            case MODEL_UPDATE:
+               {
+                  resultTable.Rows.Add(STAT_UP_TO_DATE, statistics.PlayersUpToDateCount);
+                  resultTable.Rows.Add(STAT_NOT_UP_TO_DATE, statistics.PlayersNotUpToDateCount);
+               }
+               break;
+            case MODEL_DATATABLE:
+               {
+                  resultTable.Rows.Add(STAT_CONFORM, statistics.PlayersConformCount);
+                  resultTable.Rows.Add(STAT_NOT_CONFORM, statistics.PlayersNotConformCount);
+                  resultTable.Rows.Add(STAT_OK, statistics.PlayersOkCount);
+                  resultTable.Rows.Add(STAT_UNREACHABLE, statistics.PlayersUnreachableCount);
+                  resultTable.Rows.Add(STAT_UP_TO_DATE, statistics.PlayersUpToDateCount);
+                  resultTable.Rows.Add(STAT_NOT_UP_TO_DATE, statistics.PlayersNotUpToDateCount);
+               }
+               break;
          }
+
+         model.ResultTable = resultTable;
       }
 
-      // Returns the select statistics filter for the model
-      protected string GeModeltFilter(string modelName)
+      // Add the row elements to the model
+      public override void AddRowElements(ReportModel model)
       {
-         var filter = COLUMN_STATISTIC + " in (";
-         var stats = Statistics[modelName];
-         for (int i = 0; i < stats.Count(); ++i)
-         {
-            filter += "'" + stats[i] + "'";
-            if (i < stats.Count())
-               filter += ",";
-         }
+         if (model == null)
+            return;
 
-         filter += ")";
-
-         return filter;
-      }
-
-      protected void AddTableModel()
-      {
-         if (_report == null)
-            CreateReport();
-
-         var model = _report.AddModel(false);
-         model.Name = "Table";
-
-         var master = this.MasterTable;
+         var master = model.Source.MetaData.MasterTable;
          var column = master.Columns.FirstOrDefault(c => c.Name == COLUMN_STATISTIC);
-         if (column != null)
+         if (column == null)
+            return;
+
+         var element = ReportElement.Create();
+         element.MetaColumnGUID = column.GUID;
+         element.PivotPosition = PivotPosition.Row;
+         element.SerieSortType = SerieSortType.None;
+         element.SortOrder = SortOrderConverter.kNoSortKeyword;
+
+         if (model.Name == MODEL_DATATABLE)
          {
-            var element = ReportElement.Create();
-            element.MetaColumnGUID = column.GUID;
-            element.PivotPosition = PivotPosition.Row;
-            element.SerieSortType = SerieSortType.None;
-            element.SortOrder = SortOrderConverter.kNoSortKeyword;
             element.DisplayName = "Statistique";
-            model.Elements.Add(element);
          }
-
-         column = master.Columns.FirstOrDefault(c => c.Name == COLUMN_VALUE);
-         if (column != null)
+         else
          {
-            var element = ReportElement.Create();
-            element.MetaColumnGUID = column.GUID;
-            element.PivotPosition = PivotPosition.Data;
-            element.SerieSortType = SerieSortType.None;
-            element.SortOrder = SortOrderConverter.kNoSortKeyword;
-            element.DisplayName = "Nombre de players";
-            model.Elements.Add(element);
+            element.SerieDefinition = SerieDefinition.Axis;
          }
 
-         model.InitReferences();
+         model.Elements.Add(element);
       }
 
-      // Add a model to the report
-      protected void AddModel(string modelName)
+      // Add the data elements to the model
+      public override void AddDataElements(ReportModel model)
+      {
+         if (model == null)
+            return;
+
+         var master = model.Source.MetaData.MasterTable;
+         var column = master.Columns.FirstOrDefault(c => c.Name == COLUMN_VALUE);
+         if (column == null)
+            return;
+
+         var element = ReportElement.Create();
+         element.MetaColumnGUID = column.GUID;
+         element.PivotPosition = PivotPosition.Data;
+         element.SerieSortType = SerieSortType.None;
+         element.SortOrder = SortOrderConverter.kNoSortKeyword;
+
+         if (model.Name == MODEL_DATATABLE)
+         {
+            element.DisplayName = "Nombre de players";
+         }
+         else
+         {
+            element.ChartJSSerie = ChartJSSerieDefinition.Pie;
+         }
+
+         model.Elements.Add(element);
+      }
+
+      // Add the page elements to the model
+      public override void AddPageElements(ReportModel model)
+      {
+
+      }
+
+      // Add the column elements to the model
+      public override void AddColumnElements(ReportModel model)
+      {
+
+      }
+
+      // Add the root view
+      protected ReportView AddRootView()
       {
          if (_report == null)
-            CreateReport();
+            return null;
 
-         var model = _report.AddModel(false);
-         model.Name = modelName;
+         _report.Views.Clear();
 
-         var master = this.MasterTable;
-         var column = master.Columns.FirstOrDefault(c => c.Name == COLUMN_STATISTIC);
-         if (column != null)
-         {
-            var element = ReportElement.Create();
-            element.MetaColumnGUID = column.GUID;
-            element.PivotPosition = PivotPosition.Row;
-            element.SerieDefinition = SerieDefinition.Axis;
-            element.SerieSortType = SerieSortType.None;
-            element.SortOrder = SortOrderConverter.kNoSortKeyword;
-            model.Elements.Add(element);
-         }
+         var view = _report.AddRootView();
+         view.SortOrder = _report.Views.Count > 0 ? _report.Views.Max(i => i.SortOrder) + 1 : 1;
+         view.Name = Seal.Helpers.Helper.GetUniqueName("View", (from i in _report.Views select i.Name).ToList());
 
-         column = master.Columns.FirstOrDefault(c => c.Name == COLUMN_VALUE);
-         if (column != null)
-         {
-            var element = ReportElement.Create();
-            element.MetaColumnGUID = column.GUID;
-            element.PivotPosition = PivotPosition.Data;
-            element.ChartJSSerie = ChartJSSerieDefinition.Pie;
-            element.SerieSortType = SerieSortType.None;
-            element.SortOrder = SortOrderConverter.kNoSortKeyword;
-            model.Elements.Add(element);
-         }
+         return view;
+      }
 
-         model.InitReferences();
+      // Add the container view
+      protected ReportView AddContainerView(ReportView parentView)
+      {
+         if (_report == null)
+            return null;
+
+         var view = _report.AddChildView(parentView, "Container");
+         view.InitParameters(false);
+         view.Parameters.FirstOrDefault(p => p.Name == "grid_layout").Value = "col-sm-4;col-sm-4;col-sm-4\ncol-sm-4";
+
+         return view;
       }
 
       // Add the views
-      public virtual void AddViews()
+      public override void AddView()
       {
          if (_report == null)
             return;
 
-         // Sanity clear
-         _report.Views.Clear();
-
-         var rootView = _report.AddRootView();
-         rootView.SortOrder = _report.Views.Count > 0 ? _report.Views.Max(i => i.SortOrder) + 1 : 1;
-         rootView.Name = Seal.Helpers.Helper.GetUniqueName("View", (from i in _report.Views select i.Name).ToList());
-
-         var containerView = _report.AddChildView(rootView, "Container");
-         containerView.InitParameters(false);
-         containerView.Parameters.FirstOrDefault(p => p.Name == "grid_layout").Value = "col-sm-4;col-sm-4;col-sm-4\ncol-sm-4";
+         var rootView = AddRootView();
+         var containerView = AddContainerView(rootView);
 
          foreach (var model in _report.Models)
          {
@@ -305,31 +253,58 @@ namespace Telelogos.Reportings
          }
       }
 
-      // Add the view for the model to the parent view
-      protected void AddModelView(ReportView parentView, ReportModel model)
+      // Add the ChartJS view
+      protected ReportView AddChartJSView(ReportView parentView, string colors)
       {
+         if (_report == null)
+            return null;
+
+         var view = _report.AddChildView(parentView, ReportViewTemplate.ChartJSName);
+
+         view.InitParameters(false);
+         view.GetParameter("chartjs_doughnut").BoolValue = true;
+         view.GetParameter("chartjs_show_legend").BoolValue = true;
+         view.GetParameter("chartjs_legend_position").TextValue = "bottom";
+         view.GetParameter("chartjs_colors").Value = colors;
+         view.GetParameter("chartjs_options_circumference").NumericValue = 225; // 1.25*PI
+         view.GetParameter("chartjs_options_rotation").NumericValue = 90; // 0.5*PI
+
+         return view;
+      }
+
+      // Add datatable view
+      protected ReportView AddDataTableView(ReportView parentView)
+      {
+         if (_report == null)
+            return null;
+
+         var view = _report.AddChildView(parentView, ReportViewTemplate.DataTableName);
+
+         return view;
+      }
+
+      // Add the view for the model to the parent view
+      protected ReportView AddModelView(ReportView parentView, ReportModel model)
+      {
+         if (_report == null)
+            return null;
+
          var modelView = _report.AddChildView(parentView, ReportViewTemplate.ModelName);
          // Remove the views created by the model template
          modelView.Views.Clear();
          modelView.Name = model.Name;
          modelView.ModelGUID = model.GUID;
 
-         if (model.Name != "Table")
+         if (model.Name != MODEL_DATATABLE)
          {
-            var chartJSView = _report.AddChildView(modelView, ReportViewTemplate.ChartJSName);
-
-            chartJSView.InitParameters(false);
-            chartJSView.GetParameter("chartjs_doughnut").BoolValue = true;
-            chartJSView.GetParameter("chartjs_show_legend").BoolValue = true;
-            chartJSView.GetParameter("chartjs_legend_position").TextValue = "bottom";
-            chartJSView.GetParameter("chartjs_colors").Value = Colors[modelView.Name];
-            chartJSView.GetParameter("chartjs_options_circumference").NumericValue = 225; // 1.25*PI
-            chartJSView.GetParameter("chartjs_options_rotation").NumericValue = 90; // 0.5*PI
+            AddChartJSView(modelView, Colors[model.Name]);
          }
          else
          {
-            _report.AddChildView(modelView, ReportViewTemplate.DataTableName);
+            AddDataTableView(modelView);
          }
+
+         return modelView;
       }
 
       // Generate the report and returns the file path
@@ -347,25 +322,6 @@ namespace Telelogos.Reportings
          var outputFile = (format == ReportFormat.html) ? execution.GeneratePrintResult() : execution.GeneratePDFResult();
          
          return outputFile;
-      }
-
-      // Send the email with the report as attached file
-      // TODO: déplacer ce code dans une classe plus appropriée
-      public void SendEMail(string filePath)
-      {
-         try
-         {
-            var attachement = filePath;
-            var body = "Voici votre rapport journalier !";
-            var helper = new MailHelper();
-            var message = helper.GetMailMessage("dev.telelogos@gmail.com", "aseguin@telelogos.com", null, null, "[M4D] Rapport de conformité du " + DateTime.Today.ToLongDateString(), body, attachement);
-            var config = new SmtpConfiguration { Host = "smtp.gmail.com", Password = "!telelogos2009", User = "dev.telelogos@gmail.com", Port = 465, UseSecureSocket = true };
-            helper.SendMail(config, message);
-         }
-         catch (Exception ex)
-         {
-            
-         }
       }
    }
 }

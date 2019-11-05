@@ -72,8 +72,11 @@
     <Compile Include="DashboardStatistics.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="NoSqlReportBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportBuilder.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="SqlReportBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SealLibrary\SealLibrary.csproj">

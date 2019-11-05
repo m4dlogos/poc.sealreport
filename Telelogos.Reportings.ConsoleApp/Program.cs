@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Telelogos.Reportings.ConsoleApp
 {
@@ -14,27 +9,27 @@ namespace Telelogos.Reportings.ConsoleApp
         static void Main(string[] args)
         {
 		    // Avec la librairie Telelogos.Reportings
-		      Telelogos.Reportings.Settings.RepositoryPath = Path.Combine(Path.GetFullPath(@"..\..\..\"), "Repository"); // remonter au dossier de la solution
-            var builder = new Telelogos.Reportings.DashboardReportBuilder();
-            var director = new Telelogos.Reportings.DashboardReportBuilderDirector();
-            var data = new Telelogos.Reportings.DashboardStatistics();
-            Telelogos.Reportings.Helper.ShallowCopyValues(DATA_Statistics, data);
+		      Settings.RepositoryPath = Path.Combine(Path.GetFullPath(@"..\..\..\"), "Repository"); // remonter au dossier de la solution
+            var builder = new DashboardReportBuilder();
+            var director = new DashboardReportBuilderDirector();
+            var data = new DashboardStatistics();
+            Helper.ShallowCopyValues(DATA_Statistics, data);
             director.BuildReport(builder, data);
 
-			Console.WriteLine("Format ? (html/pdf): ");
-			var format = Console.ReadLine();
+			   Console.WriteLine("Format ? (html/pdf): ");
+			   var format = Console.ReadLine();
             var reportFile = builder.GenerateReport(format == "html" ? ReportFormat.html : ReportFormat.pdf);
 
 				var destFile = Path.Combine(Directory.GetParent("../../").FullName, Path.GetFileName(reportFile));
 				File.Copy(reportFile, destFile, true);
 
-         builder.SendEMail(destFile);
+            Helper.SendEMail(destFile);
 
 				// Show the report
 				Process.Start(destFile);
 
-			Console.WriteLine("Génération terminée !");
-			Console.ReadLine();
+			   Console.WriteLine("Génération terminée !");
+			   Console.ReadLine();
         }
 
         static DashboardStatistics DATA_Statistics = new DashboardStatistics
