@@ -6,8 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Telelogos.MediaContact.SharedTools.Helpers;
-using Telelogos.MediaContact.SharedTools.Models;
+//using Telelogos.MediaContact.SharedTools.Helpers;
+//using Telelogos.MediaContact.SharedTools.Models;
 
 namespace Telelogos.Reportings
 {
@@ -33,20 +33,20 @@ namespace Telelogos.Reportings
       }
 
       // Send the email with the report as attached file
-      public static void SendEMail(string attachmentPath)
-      {
-         try
-         {
-            var body = "Voici votre rapport journalier !";
-            var helper = new MailHelper();
-            var message = helper.GetMailMessage("dev.telelogos@gmail.com", "aseguin@telelogos.com", null, null, "[M4D] Rapport de conformité du " + DateTime.Today.ToLongDateString(), body, attachmentPath);
-            var config = new SmtpConfiguration { Host = "smtp.gmail.com", Password = "!telelogos2009", User = "dev.telelogos@gmail.com", Port = 465, UseSecureSocket = true };
-            helper.SendMail(config, message);
-         }
-         catch (Exception ex)
-         {
-            // TODO: Log something
-         }
-      }
+      //public static void SendEMail(string attachmentPath)
+      //{
+      //   try
+      //   {
+      //      var body = "Voici votre rapport journalier !";
+      //      var helper = new MailHelper();
+      //      var message = helper.GetMailMessage("dev.telelogos@gmail.com", "aseguin@telelogos.com", null, null, "[M4D] Rapport de conformité du " + DateTime.Today.ToLongDateString(), body, attachmentPath);
+      //      var config = new SmtpConfiguration { Host = "smtp.gmail.com", Password = "!telelogos2009", User = "dev.telelogos@gmail.com", Port = 465, UseSecureSocket = true };
+      //      helper.SendMail(config, message);
+      //   }
+      //   catch (Exception ex)
+      //   {
+      //      // TODO: Log something
+      //   }
+      //}
    }
 }
