@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,15 +33,19 @@ namespace Winnovative.Test
 			// Set this property to 0 if you don't need to wait for such asynchcronous operations to finish
 			htmlToPdfConverter.ConversionDelay = 2;
 
+			htmlToPdfConverter.PdfDocumentOptions.PageBreakAfterHtmlElementsSelectors = new string[] { "#page_break_model_after" };
+
 			// Convert HTML to PDF using the settings above
 			string outPdfFile = @"test_convert_clyd_report.pdf";
 
 			try
 			{
-				string url = @"file://C:/users/famille/source/git/poc.sealreport/Winnovative.Test/bin/Debug/Clyd_Report4.htm";
+				string htmlString = File.ReadAllText("Clyd_Report5.htm", Encoding.UTF8);
+				string baseUrl = "";
+
 
 				// Convert the HTML page given by an URL to a PDF document in a memory buffer
-				byte[] outPdfBuffer = htmlToPdfConverter.ConvertUrl(url);
+				byte[] outPdfBuffer = htmlToPdfConverter.ConvertHtml(htmlString, baseUrl);
 
 				// Write the memory buffer in a PDF file
 				System.IO.File.WriteAllBytes(outPdfFile, outPdfBuffer);

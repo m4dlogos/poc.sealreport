@@ -218,6 +218,7 @@ namespace Telelogos.Reportings
 
 			// Generate the report
 			var outputFile = execution.GeneratePDFResult();
+			//var outputFile = execution.GeneratePrintResult();
 
 			return outputFile;
 		}
