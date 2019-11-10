@@ -1,0 +1,90 @@
+Winnovative Software License Agreement 
+======================================
+
+General 
+-------
+
+The copyright in this software ("the Software") is owned by No Limit Software ("the Owner"). This is a license agreement between "the Owner" and "You". 
+You may not load the Software into any computer or copy it without the licence of the Owner. The Owner offers you a non-exclusive licence on the terms 
+of this Agreement. 
+
+You are permitted to load the Software and use it only on a computer which is under the control of your company, unless a redistributable licence has 
+been purchased in which case the software may be used on any computer inside or outside your company as part of your own products. 
+
+You are not permitted: 
+
+a) to rent, lease, sub-licence, loan, copy (except as expressly provided in this Agreement), modify, adapt, merge, translate, reverse engineer, decompile, 
+disassemble, create derivative works, create wrappers or general purpose online services duplicating a whole or a part of the development library functionality 
+based on the whole or any part of the Software or its associated documentation or otherwise attempt to discover the source code of the Software. 
+
+b) to distribute any part of the Software as part of any software development system without the Owners express written permission.
+
+c) except as expressly provided in this Agreement, to use, reproduce or deal in the Software in any way. 
+
+d) create commercial or for personal use derivative products competing with the Software without the Owner express written permission. If you are not sure 
+if a product is in competition with the Owner products you must contact the Owner for clarifications. 
+
+License types 
+
+1) Deployment License 
+
+A "Deployment License" can be used in a single application that can be deployed on a single server owned by your company. The deployment license cannot be 
+redistributed which means you cannot use a deployment license in an application that you distribute to your own customers. The deployment license includes software 
+updates and standard technical support in the first year from purchase date. The deployment license cannot be used in personal or commercial products competing 
+with our products without our written permission. 
+
+2) Redistributable License 
+
+A "Redistributable License"can be used by an unlimited number of developers, in an unlimited number of applications that can be deployed on any number of computers. 
+The redistributable license can be included in your own applications that you distribute to your own customers without any additional costs. The protection of the 
+license key from being illegally used by your customers in their own applications is your responsibility. The redistributable license includes software updates and 
+priority technical support in the first year from purchase date. The redistributable license cannot be used in personal or commercial products competing with our 
+products without our written permission. 
+
+3) Demo License 
+
+A "Demo License" can be used only to evaluate the Software in order to make sure it fully meets your requirements. It cannot be used in personal or commercial products.
+
+Acceptance
+----------
+
+You shall be deemed to have accepted the terms of this Agreement by loading the Software into any computer. 
+
+Term
+---- 
+
+This licence is effective until you terminate it by destroying the Software and its documentation together with all copies. It will also terminate if you fail to abide 
+by this Agreement. Upon termination you agree to destroy all copies of the Software and its documentation including any Software stored on the hard disk of any computer 
+under your control. 
+
+Ownership
+---------
+
+The Owner shall at all times retain ownership of the Software and all subsequent copies thereof regardless of form. This Agreement applies to the grant of the licence 
+only and not to the contract of sale of the Software. The Owner's warranties under this Agreement are available only to the original licenced user. 
+
+Warranties
+----------
+
+1) The Owner warrants that the Software will perform substantially in accordance with its accompanying documentation (provided that the Software is properly used on 
+the computer and with the operating system for which it was designed) and that the documentation correctly describes the operation of the Software in all material respects. 
+If the Owner is notified of significant errors during the Warranty Period it will correct any such demonstrable errors in the Software or its documentation within 
+a reasonable time or (at its option) provide or authorise a refund of the price of the Software (against return of the Software and its documentation). 
+
+2) The above represent your sole remedies for any breach of the Owner's warranties, which are given only to the original registered user.
+
+3) The express terms of this Agreement are in lieu of all warranties, conditions, undertakings, terms and obligations implied by statute, common law, trade usage, course 
+of dealing or otherwise all of which are hereby excluded to the fullest extent permitted by law. 
+
+4) The Owner does not warrant that the Software will meet your requirements or that the operation of the Software will be uninterrupted or error-free or that defects 
+in the Software will be corrected. You shall load and use the Software at your own risk and in no event will the Owner be liable to you for any loss or damage of any 
+kind (except personal injury or death resulting from the Owner's negligence) including lost profits or other consequential loss arising from your use of or inability to 
+use the Software or from errors or deficiencies in it whether caused by negligence or otherwise except as expressly provided herein. 
+
+5) All other warranties are disclaimed, to the extent permitted by applicable law, by the Owner and all other parties. 
+
+Law
+---
+
+If any part of this Agreement is found void and unenforceable, it will not affect the validity of the balance of the Agreement, which shall remain valid and enforceable 
+according to its terms.

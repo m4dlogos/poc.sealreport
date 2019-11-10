@@ -23,7 +23,7 @@ namespace Telelogos.Reportings.ConsoleApp
 				var destFile = Path.Combine(Directory.GetParent("../../").FullName, Path.GetFileName(reportFile));
 				File.Copy(reportFile, destFile, true);
 
-            Helper.SendEMail(destFile);
+            //Helper.SendEMail(destFile);
 
 				// Show the report
 				Process.Start(destFile);
