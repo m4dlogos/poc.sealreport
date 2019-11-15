@@ -62,9 +62,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Telelogos.MediaContact.SharedTools, Version=6.6.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Telelogos.MediaContact.SharedTools.6.6.0\lib\net452\Telelogos.MediaContact.SharedTools.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChartData.cs" />
+    <Compile Include="ChartDetail.cs" />
+    <Compile Include="ChartType.cs" />
     <Compile Include="ClydReportBuilder.cs" />
     <Compile Include="ClydReportBuilderDirector.cs" />
     <Compile Include="DashboardReportBuilder.cs" />
@@ -86,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="CodeMap1.dgml" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

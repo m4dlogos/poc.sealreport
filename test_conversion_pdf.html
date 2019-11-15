@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js'></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+	<script src="jspdf.debug.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+    <script>
+		Chart.plugins.register({
+		id:'doughnutWithText',
+		afterDraw: function(chart) {
+			if (chart.config.type == 'doughnut')
+			{
+				var ctx = chart.chart.ctx;
+				ctx.save();
+
+				ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontFamily, 'normal', Chart.defaults.global.defaultFontFamily);
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'bottom';
+				chart.data.datasets.forEach(function (dataset) {
+
+				for (var i = 0; i < dataset.data.length; i++) {
+					var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+						total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+						mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
+						start_angle = model.startAngle,
+						end_angle = model.endAngle,
+						mid_angle = start_angle + (end_angle - start_angle)/2;
+
+						var x = mid_radius * Math.cos(mid_angle);
+						var y = mid_radius * Math.sin(mid_angle);
+
+						ctx.fillStyle = '#fff';
+						if (i == 3){ // Darker text color for lighter background
+							ctx.fillStyle = '#444';
+						}
+						//var percent = String(Math.round(dataset.data[i]/total*100)) + "%";      
+						//Don't Display If Legend is hide or value is 0
+						if(dataset.data[i] != 0 && dataset._meta[Object.keys(dataset._meta)[0]].data[i].hidden != true) {
+							ctx.fillText(dataset.data[i], model.x + x, model.y + y);
+							// Display percent in another line, line break doesn't work for fillText
+							//ctx.fillText(percent, model.x + x, model.y + y + 15);
+						}
+					}
+				});
+
+				ctx.fillStyle = '#333333';
+				ctx.textBaseline = 'middle';
+				ctx.textAlign = 'center';
+				var model = chart.data.datasets[0]._meta[Object.keys(chart.data.datasets[0]._meta)[0]].data[0]._model;
+				var total = chart.data.datasets[0]._meta[Object.keys(chart.data.datasets[0]._meta)[0]].total;
+				var firstValue = chart.data.datasets[0].data[0];
+				var percent = Number(firstValue/total).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:0});
+				
+				let fontSize = Math.floor(model.innerRadius * 0.7);
+				ctx.font = fontSize + 'px arial';
+				let textHeight = parseInt(ctx.font);
+				var maxWidth = (2*model.innerRadius)*0.7;
+				
+				ctx.fillText(percent, model.x, model.y, maxWidth);
+				
+				fontSize = fontSize*0.6;
+				ctx.font = fontSize + 'px ariral';
+				ctx.fillText(chart.data.labels[0], model.x, model.y + textHeight*0.7, maxWidth);
+
+				ctx.restore();
+			}
+		}
+		});
+
+		function jspdf() {
+			var divHeight = $('#main').height();
+            var divWidth = $('#main').width();
+			var ratio = divHeight / divWidth;
+			html2canvas(document.getElementById("main"), { height: divHeight, width: divWidth, scale: 2}).then(canvas => {
+				var image = canvas.toDataURL('image/jpg');
+				console.log(image);
+				var pdf = new jsPDF('p', 'pt', 'a4', false);
+				var width = pdf.internal.pageSize.getWidth() - 20;
+                var height = pdf.internal.pageSize.getHeight();
+				height = ratio * width;
+				pdf.addImage(image, 'jpg',10, 10, width, height - 10);
+				var index = window.location.href.lastIndexOf("/") + 1;
+				var filenameWithExtension = window.location.href.substr(index);
+				var filename = filenameWithExtension.split(".")[0];
+				pdf.save(filename + '.pdf');
+			});
+		}		
+		
+		function htmlcapture() {
+				html2canvas(document.getElementById('main'), {
+				scale:window.devicePixelRatio,
+				allowTaint: true,
+				useCORS: true,
+				logging: false,
+				scrollX: 0,
+				scrollY: 0
+				}).then(canvas => {
+					let data = canvas.toDataURL('image/jpg');
+					let src = encodeURI(data);
+					console.log(src);
+					let elem = document.getElementById('capture');
+					elem.src = src;
+					$("#capture").show();
+				});
+			}
+
+    </script>
+  </head>
+  <body>
+    
+    <div id="main" class="container-fluid">
+		<div class="row">
+			<div class="col-md-4 col-xs-6">
+			</div>
+			<div class="col-md-4 col-xs-6">
+				<h1>On-premise vs SaaS distribution</h1>
+				<br />
+				<canvas id='myChart'></canvas>
+				
+				<script>
+				var ctx = document.getElementById('myChart').getContext('2d');
+				var myChart = new Chart(ctx, {
+				  type: 'doughnut',
+				  data: {
+					labels: ['On-premise', 'SaaS'],
+					datasets: [{
+					  label: 'apples',
+					  data: [45, 18],
+					  backgroundColor: ['red', 'green']
+					}]
+				  },
+				  options: {
+					circumference: 1.25*Math.PI,
+					rotation: 0.5*Math.PI
+				  }
+				});
+				</script>
+			</div>
+			<div class="col-md-4 col-xs-6">
+			</div>
+		</div>
+		
+		<br/>
+		<div id="tableau" class="row">
+			<div class="col-md-4 col-xs-6">
+			</div>
+			<div class="col-md-4 col-xs-6">
+				<br />
+				<table class="table">
+				<tr>
+					<th scope="col">Libellé</th><th scope="col">Prix</th><th scope="col">Quantité</th>
+				</tr>
+				<tr>
+					<td>On-premise</td><td>300€</td><td>45</td>
+				</tr>
+				<tr>
+					<td>SaaS</td><td>25€</td><td>18</td>
+				</tr>
+				</table>
+				</div>
+			<div class="col-md-4 col-xs-6">
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4 col-xs-6">
+		</div>
+		<div class="col-md-4 col-xs-6">
+			<button onclick="javascript:jspdf()" type="button" class="btn btn-info btn-lg">Enregistrer en PDF</button>
+		</div>
+		<div class="col-md-4 col-xs-6">
+		</div>
+	</div>
+
+  </body>
+</html>
+
+
+

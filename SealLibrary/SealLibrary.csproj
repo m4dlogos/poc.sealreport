@@ -267,124 +267,57 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Repository\Views\Model.cshtml">
-      <Link>Views\Model.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Model.iSummaryTable.partial.cshtml">
-      <Link>Views\Model.iSummaryTable.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ModelContainer.config.cshtml">
-      <Link>Views\ModelContainer.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ModelContainer.cshtml">
-      <Link>Views\ModelContainer.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\PageTable.config.cshtml">
-      <Link>Views\PageTable.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\PageTable.cshtml">
-      <Link>Views\PageTable.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\DataTable.config.cshtml">
-      <Link>Views\DataTable.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\DataTable.cshtml">
-      <Link>Views\DataTable.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ChartPlotly.config.cshtml">
-      <Link>Views\ChartPlotly.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ChartPlotly.cshtml">
-      <Link>Views\ChartPlotly.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ChartNVD3.config.cshtml">
-      <Link>Views\ChartNVD3.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ChartNVD3.cshtml">
-      <Link>Views\ChartNVD3.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ChartJS.config.cshtml">
-      <Link>Views\ChartJS.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ChartJS.cshtml">
-      <Link>Views\ChartJS.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\KPI.config.cshtml">
-      <Link>Views\KPI.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\KPI.cshtml">
-      <Link>Views\KPI.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Model.iCSV.partial.cshtml">
-      <Link>Views\Model.iCSV.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Model.iPages.partial.cshtml">
-      <Link>Views\Model.iPages.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Model.iMenu.partial.cshtml">
-      <Link>Views\Model.iMenu.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Model.config.cshtml">
-      <Link>Views\Model.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ModelDetail.iCSV.partial.cshtml">
-      <Link>Views\ModelDetail.iCSV.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ModelDetail.cshtml">
-      <Link>Views\ModelDetail.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\ModelDetail.config.cshtml">
-      <Link>Views\ModelDetail.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Container.cshtml">
-      <Link>Views\Container.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Container.config.cshtml">
-      <Link>Views\Container.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Free.cshtml">
-      <Link>Views\Free.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Free.config.cshtml">
-      <Link>Views\Free.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Report.cshtml">
-      <Link>Views\Report.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Report.config.cshtml">
-      <Link>Views\Report.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Report.iHeader.partial.cshtml">
-      <Link>Views\Report.iHeader.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Report.iInformation.partial.cshtml">
-      <Link>Views\Report.iInformation.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Report.iMessages.partial.cshtml">
-      <Link>Views\Report.iMessages.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Report.iRestrictions.partial.cshtml">
-      <Link>Views\Report.iRestrictions.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Report.iViews.partial.cshtml">
-      <Link>Views\Report.iViews.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Scripts\common.js">
-      <Link>Views\Scripts\common.js</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Scripts\chartNVD3.js">
-      <Link>Views\Scripts\chartNVD3.js</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Scripts\helpers.js">
-      <Link>Views\Scripts\common.js</Link>
-    </None>
-    <None Include="..\..\Repository\Views\Content\seal.css">
-      <Link>Views\Content\seal.css</Link>
-    </None>
     <None Include="CD-Dashboard.cd" />
     <None Include="CD-Data Source.cd" />
     <None Include="packages.config" />
     <None Include="CD-Report Model.cd" />
+    <None Include="Views\ChartJS.config.cshtml" />
+    <None Include="Views\ChartJS.cshtml" />
+    <None Include="Views\ChartNVD3.config.cshtml" />
+    <None Include="Views\ChartNVD3.cshtml" />
+    <None Include="Views\ChartPlotly.config.cshtml" />
+    <None Include="Views\ChartPlotly.cshtml" />
+    <None Include="Views\Container.config.cshtml" />
+    <None Include="Views\Container.cshtml" />
+    <None Include="Views\Content\bootstrap.min.css.map" />
+    <None Include="Views\DataTable.config.cshtml" />
+    <None Include="Views\DataTable.cshtml" />
+    <None Include="Views\Fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Views\Fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="Views\Fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Views\Fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Views\Free.config.cshtml" />
+    <None Include="Views\Free.cshtml" />
+    <None Include="Views\KPI.config.cshtml" />
+    <None Include="Views\KPI.cshtml" />
+    <None Include="Views\M4D_Dashboard.config.cshtml" />
+    <None Include="Views\M4D_Dashboard.cshtml" />
+    <None Include="Views\Model.config.cshtml" />
+    <None Include="Views\Model.cshtml" />
+    <None Include="Views\Model.iCSV.partial.cshtml" />
+    <None Include="Views\Model.iMenu.partial.cshtml" />
+    <None Include="Views\Model.iPages.partial.cshtml" />
+    <None Include="Views\Model.iSummaryTable.partial.cshtml" />
+    <None Include="Views\ModelContainer.config.cshtml" />
+    <None Include="Views\ModelContainer.cshtml" />
+    <None Include="Views\ModelDetail.config.cshtml" />
+    <None Include="Views\ModelDetail.cshtml" />
+    <None Include="Views\ModelDetail.iCSV.partial.cshtml" />
+    <None Include="Views\PageTable.config.cshtml" />
+    <None Include="Views\PageTable.cshtml" />
+    <None Include="Views\Report.config.cshtml" />
+    <None Include="Views\Report.cshtml" />
+    <None Include="Views\Report.iHeader.partial.cshtml" />
+    <None Include="Views\Report.iInformation.partial.cshtml" />
+    <None Include="Views\Report.iMessages.partial.cshtml" />
+    <None Include="Views\Report.iRestrictions.partial.cshtml" />
+    <None Include="Views\Report.iViews.partial.cshtml" />
+    <None Include="Views\TabControl.config.cshtml" />
+    <None Include="Views\TabControl.cshtml" />
+    <None Include="Views\TabControl.iContent.partial.cshtml" />
+    <None Include="Views\TabControl.iMenu.partial.cshtml" />
+    <None Include="Views\TabPage.config.cshtml" />
+    <None Include="Views\TabPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\AboutBoxForm.resx">
@@ -440,24 +373,52 @@
     <Content Include="ScintillaNET FindReplaceDialog.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="..\..\Repository\Views\TabControl.config.cshtml">
-      <Link>Views\TabControl.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\TabControl.cshtml">
-      <Link>Views\TabControl.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\TabControl.iMenu.partial.cshtml">
-      <Link>Views\TabControl.iMenu.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\TabControl.iContent.partial.cshtml">
-      <Link>Views\TabControl.iContent.partial.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\TabPage.config.cshtml">
-      <Link>Views\TabPage.config.cshtml</Link>
-    </None>
-    <None Include="..\..\Repository\Views\TabPage.cshtml">
-      <Link>Views\TabPage.cshtml</Link>
-    </None>
+    <Content Include="Views\Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Views\Content\bootstrap-select.min.css" />
+    <Content Include="Views\Content\bootstrap.min.css" />
+    <Content Include="Views\Content\dataTables.bootstrap.min.css" />
+    <Content Include="Views\Content\nv.d3.min.css" />
+    <Content Include="Views\Content\responsive.bootstrap.min.css" />
+    <Content Include="Views\Content\responsive.dataTables.min.css" />
+    <Content Include="Views\Content\seal.css" />
+    <Content Include="Views\Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Views\Images\favicon.ico" />
+    <Content Include="Views\Images\logo.png" />
+    <Content Include="Views\Images\logo_seal.png" />
+    <Content Include="Views\Scripts\bootstrap-datetimepicker.fix1989.js" />
+    <Content Include="Views\Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Views\Scripts\bootstrap-select.min.js" />
+    <Content Include="Views\Scripts\bootstrap-select.patchPointer.min.js" />
+    <Content Include="Views\Scripts\bootstrap.min.js" />
+    <Content Include="Views\Scripts\Chart.ext.js" />
+    <Content Include="Views\Scripts\Chart.min.js" />
+    <Content Include="Views\Scripts\Chart.plugins.js" />
+    <Content Include="Views\Scripts\chartNVD3.js" />
+    <Content Include="Views\Scripts\common.js" />
+    <Content Include="Views\Scripts\d3.min.js" />
+    <Content Include="Views\Scripts\dataTables.bootstrap.min.js" />
+    <Content Include="Views\Scripts\dataTables.responsive.fix71.js" />
+    <Content Include="Views\Scripts\dataTables.responsive.min.js" />
+    <Content Include="Views\Scripts\datetime-moment.js" />
+    <Content Include="Views\Scripts\helpers.js" />
+    <Content Include="Views\Scripts\i18n\moment.de.js" />
+    <Content Include="Views\Scripts\i18n\moment.es.js" />
+    <Content Include="Views\Scripts\i18n\moment.fr.js" />
+    <Content Include="Views\Scripts\i18n\moment.it.js" />
+    <Content Include="Views\Scripts\i18n\moment.nl.js" />
+    <Content Include="Views\Scripts\i18n\moment.pt.js" />
+    <Content Include="Views\Scripts\i18n\selectpicker.de.min.js" />
+    <Content Include="Views\Scripts\i18n\selectpicker.es.min.js" />
+    <Content Include="Views\Scripts\i18n\selectpicker.fr.min.js" />
+    <Content Include="Views\Scripts\i18n\selectpicker.it.min.js" />
+    <Content Include="Views\Scripts\i18n\selectpicker.nl.min.js" />
+    <Content Include="Views\Scripts\i18n\selectpicker.pt.min.js" />
+    <Content Include="Views\Scripts\jquery.dataTables.min.js" />
+    <Content Include="Views\Scripts\jquery.min.js" />
+    <Content Include="Views\Scripts\moment.min.js" />
+    <Content Include="Views\Scripts\nv.d3.min.js" />
+    <Content Include="Views\Scripts\plotly-latest.min.js" />
+    <Content Include="Views\Scripts\responsive.bootstrap.min.js" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -483,8 +444,12 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /E /Y "$(ProjectDir)\Views\*.*" "$(SolutionDir)\Repository\Views\"
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,7 +6,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 
-
 namespace Telelogos.Reportings
 {
    // Class that implements the dashboard report generation
@@ -220,6 +219,8 @@ namespace Telelogos.Reportings
          var view = _report.AddRootView();
          view.SortOrder = _report.Views.Count > 0 ? _report.Views.Max(i => i.SortOrder) + 1 : 1;
          view.Name = Seal.Helpers.Helper.GetUniqueName("View", (from i in _report.Views select i.Name).ToList());
+         view.InitParameters(false);
+         view.GetParameter("show_pdf_button").BoolValue = (Settings.ReportFormat != ReportFormat.pdf);
 
          return view;
       }
@@ -232,7 +233,7 @@ namespace Telelogos.Reportings
 
          var view = _report.AddChildView(parentView, "Container");
          view.InitParameters(false);
-         view.Parameters.FirstOrDefault(p => p.Name == "grid_layout").Value = "col-sm-4;col-sm-4;col-sm-4\ncol-sm-4";
+         view.GetParameter("grid_layout").Value = "col-sm-4;col-sm-4;col-sm-4\ncol-sm-4";
 
          return view;
       }
@@ -307,7 +308,7 @@ namespace Telelogos.Reportings
       }
 
       // Generate the report and returns the file path
-      public string GenerateReport(ReportFormat format = ReportFormat.html)
+      public string GenerateReport()
       {
          // Execute the report
          _report.RenderOnly = true;
@@ -318,7 +319,7 @@ namespace Telelogos.Reportings
          while (_report.IsExecuting) System.Threading.Thread.Sleep(100);
 
          // Generate the report
-         var outputFile = (format == ReportFormat.html) ? execution.GeneratePrintResult() : execution.GeneratePDFResult();
+         var outputFile = (Settings.ReportFormat == ReportFormat.html) ? execution.GeneratePrintResult() : execution.GeneratePDFResult();
          
          return outputFile;
       }

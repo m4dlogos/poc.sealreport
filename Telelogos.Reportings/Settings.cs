@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using System.ComponentModel;
 
 namespace Telelogos.Reportings
 {
@@ -10,5 +8,8 @@ namespace Telelogos.Reportings
    {
       public static string RepositoryPath { get; set; }
       public static string WebApplicationPath { get; set; }
+
+      [DefaultValue(ReportFormat.html)]
+      public static ReportFormat ReportFormat { get; set; }
    }
 }

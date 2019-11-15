@@ -9,67 +9,78 @@ namespace Telelogos.Reportings.Test
    {
       static void Main(string[] args)
       {
-			ClydReport();
+         ClydReport();
       }
 
-		static void ClydReport()
-		{
-			Settings.RepositoryPath = Path.Combine(Path.GetFullPath(@"..\..\..\"), "Repository"); // remonter au dossier de la solution
-			var builder = new ClydReportBuilder();
-			var director = new ClydReportBuilderDirector();
-			var data = new Dictionary<string, List<ChartData>>();
-			var connexions = new List<ChartData>
-			{
-				new ChartData { Label = "1D", Serie = "Last Year", Value = 3},
-				new ChartData { Label = "1D", Serie = "Current", Value = 4},
-				new ChartData { Label = "1W", Serie = "Last Year", Value = 5},
-				new ChartData { Label = "1W", Serie = "Current", Value = 2}
-			};
+      static void ClydReport()
+      {
+         Settings.RepositoryPath = Path.Combine(Path.GetFullPath(@"..\..\..\"), "Repository"); // remonter au dossier de la solution
+         var builder = new ClydReportBuilder();
+         var director = new ClydReportBuilderDirector();
 
-			data.Add(ClydReportBuilder.MODEL_BAR, connexions);
+         var data = new Dictionary<string, List<ChartDetail>>();
+         var devicesConnectionChartData = new List<ChartDetail>
+         {
+            new ChartDetail { IdData = null, LabelData = "1", SerieData = "C", ValueData = 0, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "1", SerieData = "D", ValueData = 55434, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "3", SerieData = "C", ValueData = 0, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "3", SerieData = "D", ValueData = 55434, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "7", SerieData = "C", ValueData = 0, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "7", SerieData = "D", ValueData = 55434, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "15", SerieData = "C", ValueData = 39666, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "15", SerieData = "D", ValueData = 15768, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "30", SerieData = "C", ValueData = 42793, VersionData = null },
+            new ChartDetail { IdData = null, LabelData = "30", SerieData = "D", ValueData = 12641, VersionData = null }
+         };
 
-			var utilisations = new List<ChartData>
-			{
-				new ChartData {Label = "Work", Serie = "", Value = 75},
-				new ChartData {Label = "Home", Serie = "", Value = 25}
-			};
+         data.Add("DevicesConnection", devicesConnectionChartData);
 
-			data.Add(ClydReportBuilder.MODEL_PIE, utilisations);
+         var utilisations = new List<ChartDetail>
+         {
+            new ChartDetail {IdData = null, LabelData = "Connected", SerieData = "C", ValueData = 75, VersionData = null},
+            new ChartDetail {IdData = null, LabelData = "Disconnected", SerieData = "C", ValueData = 25, VersionData = null}
+         };
 
-			director.BuildReport(builder, data);
-			var reportFile = builder.GenerateReport();
+         data.Add("Pie", utilisations);
 
-			var destFile = Path.Combine(Directory.GetParent("../../").FullName, Path.GetFileName(reportFile));
-			File.Copy(reportFile, destFile, true);
+         var chartDef = new Dictionary<string, ChartType> { { "DevicesConnection", ChartType.Bar }, { "Pie", ChartType.Pie } };
+         var columnElem = new Dictionary<string, string> { { "DevicesConnection", ClydReportBuilder.COLUMN_SERIE } };
 
-			Process.Start(destFile);
-		}
+         director.BuildReport(builder, data, chartDef, columnElement:columnElem);
+         var reportFile = builder.GenerateReport();
 
-		static void M4D_DashboardReport()
-		{
-			// Avec la librairie Telelogos.Reportings
-			Settings.RepositoryPath = Path.Combine(Path.GetFullPath(@"..\..\..\"), "Repository"); // remonter au dossier de la solution
-			var builder = new DashboardReportBuilder();
-			var director = new DashboardReportBuilderDirector();
-			var data = new Telelogos.Reportings.DashboardStatistics();
-			Helper.ShallowCopyValues(DATA_Statistics, data);
-			director.BuildReport(builder, data);
+         var destFile = Path.Combine(Directory.GetParent("../../").FullName, Path.GetFileName(reportFile));
+         File.Copy(reportFile, destFile, true);
 
-			Console.WriteLine("Format ? (html/pdf): ");
-			var format = Console.ReadLine();
-			var reportFile = builder.GenerateReport(format == "html" ? ReportFormat.html : ReportFormat.pdf);
+         Process.Start(destFile);
+      }
 
-			var destFile = Path.Combine(Directory.GetParent("../../").FullName, Path.GetFileName(reportFile));
-			File.Copy(reportFile, destFile, true);
+      static void M4D_DashboardReport()
+      {
+         // Avec la librairie Telelogos.Reportings
+         Settings.RepositoryPath = Path.Combine(Path.GetFullPath(@"..\..\..\"), "Repository"); // remonter au dossier de la solution
+         var builder = new DashboardReportBuilder();
+         var director = new DashboardReportBuilderDirector();
+         var data = new Reportings.DashboardStatistics();
+         Helper.ShallowCopyValues(DATA_Statistics, data);
+         director.BuildReport(builder, data);
 
-			//Helper.SendEMail(destFile);
+         Console.WriteLine("Format ? (html/pdf): ");
+         var format = Console.ReadLine();
+         Settings.ReportFormat = (format == "pdf") ? ReportFormat.pdf : ReportFormat.html;
 
-			// Show the report
-			Process.Start(destFile);
+         var reportFile = builder.GenerateReport();
 
-			Console.WriteLine("Génération terminée !");
-			Console.ReadLine();
-		}
+         var destFile = Path.Combine(Directory.GetParent("../../").FullName, Path.GetFileName(reportFile));
+         File.Copy(reportFile, destFile, true);
+
+         //Helper.SendEMail(destFile);
+
+         // Show the report
+         Process.Start(destFile);
+
+         Console.WriteLine("Génération terminée !");
+      }
 
       static DashboardStatistics DATA_Statistics = new DashboardStatistics
       {
