@@ -1,17 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29411.108
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SealLibrary", "SealLibrary\SealLibrary.csproj", "{6D8D30F4-B36E-4A02-8704-D63C5A35DF1F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telelogos.Reportings", "Telelogos.Reportings\Telelogos.Reportings.csproj", "{F3DCB327-F0E8-449F-9677-B5702264B69E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telelogos.Reportings.WebServer", "Telelogos.Reportings.WebServer\Telelogos.Reportings.WebServer.csproj", "{0364B9B3-DAF9-4979-8461-E83578C02C94}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telelogos.Reportings.ConsoleApp", "Telelogos.Reportings.ConsoleApp\Telelogos.Reportings.ConsoleApp.csproj", "{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SealSendEMail.Test", "SealSendEMail.Test\SealSendEMail.Test.csproj", "{901C5025-8314-4C96-889B-E8B19D7596FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telelogos.Reportings.Test", "Telelogos.Reportings.Test\Telelogos.Reportings.Test.csproj", "{F304CEFD-B6D7-48A2-BB35-0DDA80DFD8FE}"
 EndProject
@@ -51,42 +45,6 @@ Global
 		{F3DCB327-F0E8-449F-9677-B5702264B69E}.Release|x64.Build.0 = Release|Any CPU
 		{F3DCB327-F0E8-449F-9677-B5702264B69E}.Release|x86.ActiveCfg = Release|Any CPU
 		{F3DCB327-F0E8-449F-9677-B5702264B69E}.Release|x86.Build.0 = Release|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Debug|x64.Build.0 = Debug|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Debug|x86.Build.0 = Debug|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Release|x64.ActiveCfg = Release|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Release|x64.Build.0 = Release|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Release|x86.ActiveCfg = Release|Any CPU
-		{0364B9B3-DAF9-4979-8461-E83578C02C94}.Release|x86.Build.0 = Release|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Debug|x64.Build.0 = Debug|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Debug|x86.Build.0 = Debug|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Release|x64.ActiveCfg = Release|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Release|x64.Build.0 = Release|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Release|x86.ActiveCfg = Release|Any CPU
-		{3EBF7A6B-8AB1-4732-A0A2-ED8BBA8178AD}.Release|x86.Build.0 = Release|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Debug|x64.Build.0 = Debug|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Debug|x86.Build.0 = Debug|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Release|x64.ActiveCfg = Release|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Release|x64.Build.0 = Release|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Release|x86.ActiveCfg = Release|Any CPU
-		{901C5025-8314-4C96-889B-E8B19D7596FA}.Release|x86.Build.0 = Release|Any CPU
 		{F304CEFD-B6D7-48A2-BB35-0DDA80DFD8FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F304CEFD-B6D7-48A2-BB35-0DDA80DFD8FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F304CEFD-B6D7-48A2-BB35-0DDA80DFD8FE}.Debug|x64.ActiveCfg = Debug|Any CPU
