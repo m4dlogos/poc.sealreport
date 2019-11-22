@@ -2,14 +2,51 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using System.Security;
+using System.Security.Permissions;
+using System.Security.Policy;
+using System.Text;
 
 namespace Telelogos.Reportings.Test
 {
    class Program
    {
-      static void Main(string[] args)
+      static int Main(string[] args)
       {
+         if (AppDomain.CurrentDomain.IsDefaultAppDomain())
+         {
+            // RazorEngine cannot clean up from the default appdomain...
+            Console.WriteLine("Switching to second AppDomain, for RazorEngine...");
+            AppDomainSetup adSetup = new AppDomainSetup();
+            adSetup.ApplicationBase = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            var current = AppDomain.CurrentDomain;
+            // You only need to add strongnames when your appdomain is not a full trust environment.
+            var strongNames = new StrongName[0];
+
+            var domain = AppDomain.CreateDomain(
+                "MyMainDomain", null,
+                current.SetupInformation, new PermissionSet(PermissionState.Unrestricted),
+                strongNames);
+            var executingAssembly = Assembly.GetExecutingAssembly().Location;
+            var exitCode = domain.ExecuteAssembly(executingAssembly);
+            // RazorEngine will cleanup. 
+            AppDomain.Unload(domain);
+            return exitCode;
+         }
+         // Continue with your code.
+         Console.WriteLine("Start report generation ...");
+         //var watch = new Stopwatch();
+         //var log = new StringBuilder();
+         //watch.Start();
          ClydReport();
+         //watch.Stop();
+         //log.Append("Elapsed time: " + watch.ElapsedMilliseconds);
+
+         Console.WriteLine(log);
+         Console.ReadLine();
+
+         return 0;
       }
 
       static void ClydReport()
