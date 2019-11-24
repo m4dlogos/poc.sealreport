@@ -216,12 +216,6 @@
    <script>
         @Raw(view.GetValue("additional_js"))
    </script>
-   <script>
-       @if (view.GetParameter("show_pdf_button").BoolValue == false)
-       {
-          @Raw("window.onload = function() { document.getElementById('btnConvertPdf').style.display = 'none';}");
-        }
-   </script>
 </head>
 <body>
     <div id="for_pdf">
@@ -292,30 +286,6 @@
             @Include(view.GetPartialTemplateKey("Report.iViews", view), view)
         </div>
     </div>
-    </div>
-
-    <div class="container">
-       <br />
-       <button id="btnConvertPdf" onclick="javascript:jspdf()" type="button" class="btn btn btn-primary btn-lg">Enregistrer en PDF</button>
-       <script>
-          function jspdf() {
-             var divHeight = $('#for_pdf').height();
-             var divWidth = $('#for_pdf').width();
-             var ratio = divHeight / divWidth;
-             html2canvas(document.getElementById("for_pdf"), { height: divHeight, width: divWidth, scale: 2}).then(canvas => {
-                var image = canvas.toDataURL('image/jpg');
-                var pdf = new jsPDF('p', 'pt', 'a4', false);
-                var width = pdf.internal.pageSize.getWidth() - 20;
-                var height = pdf.internal.pageSize.getHeight();
-                height = ratio * width;
-                pdf.addImage(image, 'jpg', 10, 10, width, height - 10);
-                var index = window.location.href.lastIndexOf("/") + 1;
-                var filenameWithExtension = window.location.href.substr(index);
-                var filename = filenameWithExtension.split(".")[0];
-                pdf.save(filename + '.pdf');
-             });
-          }
-       </script>
     </div>
 
     <!--back to top-->

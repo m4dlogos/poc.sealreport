@@ -13,11 +13,5 @@ namespace Telelogos.ReportBuilder
       /// Le chemin de l'application path quand on est dans une application web
       /// </summary>
       public static string WebApplicationPath { get; set; }
-
-      /// <summary>
-      /// Le format de sortie du rapport
-      /// </summary>
-      [DefaultValue(ReportFormat.html)]
-      public static ReportFormat ReportFormat { get; set; }
    }
 }

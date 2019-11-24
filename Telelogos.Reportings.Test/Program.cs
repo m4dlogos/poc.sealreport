@@ -43,7 +43,7 @@ namespace Telelogos.Reportings.Test
          //watch.Stop();
          //log.Append("Elapsed time: " + watch.ElapsedMilliseconds);
 
-         Console.WriteLine(log);
+         //Console.WriteLine(log);
          Console.ReadLine();
 
          return 0;
