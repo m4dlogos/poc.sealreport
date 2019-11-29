@@ -43,8 +43,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="wnvhtmltopdf">
-      <HintPath>..\WnvHtmlToPdf-v15.0\wnvhtmltopdf.dll</HintPath>
+    <Reference Include="wnvhtmltopdf, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b12703d35a33ff98, processorArchitecture=MSIL">
+      <HintPath>..\packages\wnvhtmlconvert.15.0.0\lib\net40\wnvhtmltopdf.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

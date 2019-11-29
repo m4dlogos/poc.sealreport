@@ -21,25 +21,42 @@ namespace Winnovative.Test
          SetDefaultDocumentInfo(htmlToPdfConverter);
          SetDefaultBookmarkOptions(htmlToPdfConverter);
          SetDefaultViewerPreferences(htmlToPdfConverter);
-         AddConverterScript(htmlToPdfConverter);
+         //AddPdfHeader(htmlToPdfConverter);
+         AddHtmlHeader(htmlToPdfConverter);
+         AddFooter(htmlToPdfConverter);
 
 
-			htmlToPdfConverter.PdfDocumentOptions.PageBreakAfterHtmlElementsSelectors = new string[] { "#page_break_model_after" };
-
-			// Convert HTML to PDF using the settings above
-			string outPdfFile = @"test_convert_clyd_report.pdf";
+         // Convert HTML to PDF using the settings above
+         var outputDir = Path.GetFullPath(@"..\..\");
+         var htmlFile = Path.Combine(outputDir, "Devices Connection.html");
+         string outPdfFile = Path.Combine(outputDir, "Rapport Devices Connection.pdf");
 
 			try
 			{
-				string htmlString = File.ReadAllText("Clyd_Report.htm", Encoding.UTF8);
+				string htmlString = File.ReadAllText(htmlFile, Encoding.UTF8);
 				string baseUrl = "";
 
 
 				// Convert the HTML page given by an URL to a PDF document in a memory buffer
-				byte[] outPdfBuffer = htmlToPdfConverter.ConvertHtml(htmlString, baseUrl);
+				var documentObject = htmlToPdfConverter.ConvertHtmlToPdfDocumentObject(htmlString, baseUrl);
 
-				// Write the memory buffer in a PDF file
-				System.IO.File.WriteAllBytes(outPdfFile, outPdfBuffer);
+            float headerWidth = documentObject.Header.Width;
+            float headerHeight = documentObject.Header.Height;
+
+            // Create a line element for the bottom of the header
+            LineElement headerLine = new LineElement(0, headerHeight - 10, headerWidth, headerHeight - 10);
+
+            // Set line color
+            headerLine.ForeColor = Color.Gray;
+
+            // Add line element to the bottom of the header
+            documentObject.Header.AddElement(headerLine);
+
+
+            byte[] outPdfBuffer = documentObject.Save();
+
+            // Write the memory buffer in a PDF file
+            System.IO.File.WriteAllBytes(outPdfFile, outPdfBuffer);
 
 				System.Diagnostics.Process.Start(outPdfFile);
 			}
@@ -117,6 +134,154 @@ namespace Winnovative.Test
          LineElement footerLine = new LineElement(0, 4, documentWidth, 4);
          footerLine.ForeColor = Color.Gray;
          converter.PdfFooterOptions.AddElement(footerLine);
+      }
+
+      static void AddFooter(HtmlToPdfConverter converter)
+      {
+         float documentWidth = converter.PdfDocumentOptions.PdfPageSize.Width - converter.PdfDocumentOptions.LeftMargin - converter.PdfDocumentOptions.RightMargin;
+         if (converter.PdfDocumentOptions.PdfPageOrientation == PdfPageOrientation.Landscape)
+         {
+            documentWidth = converter.PdfDocumentOptions.PdfPageSize.Height - converter.PdfDocumentOptions.LeftMargin - converter.PdfDocumentOptions.RightMargin;
+         }
+         // Footer 
+         converter.PdfDocumentOptions.ShowFooter = true;
+         TextElement footerText = new TextElement(0, 6, "Page &p; of &P;", new Font(new System.Drawing.FontFamily("Arial"), 9, GraphicsUnit.Point));
+         footerText.TextAlign = HorizontalTextAlign.Right;
+         footerText.ForeColor = Color.Gray;
+         footerText.EmbedSysFont = true;
+         converter.PdfFooterOptions.AddElement(footerText);
+
+         TextElement footerText2 = new TextElement(0, 6, DateTime.Now.ToString("d") + " " + DateTime.Now.ToString("t"), new Font(new FontFamily("Arial"), 9, GraphicsUnit.Point));
+         footerText2.TextAlign = HorizontalTextAlign.Left;
+         footerText2.ForeColor = Color.Gray;
+         footerText2.EmbedSysFont = true;
+         converter.PdfFooterOptions.AddElement(footerText2);
+
+         // Footer line 
+         LineElement footerLine = new LineElement(0, 4, documentWidth, 4);
+         footerLine.ForeColor = Color.Gray;
+         converter.PdfFooterOptions.AddElement(footerLine);
+      }
+
+      static HtmlToPdfConverter _htmlToPdfConverter;
+
+      static void AddPdfHeader(HtmlToPdfConverter htmlToPdfConverter)
+      {
+
+         // Enable header in the generated PDF document
+         htmlToPdfConverter.PdfDocumentOptions.ShowHeader = true;
+         // Set header background color
+         htmlToPdfConverter.PdfHeaderOptions.HeaderBackColor = Color.White;
+
+
+         var logoClient = Image.FromFile(Path.Combine(Path.GetFullPath(@"..\..\Resources"), "logo-client.png"));
+         var logoProduit = Image.FromFile(Path.Combine(Path.GetFullPath(@"..\..\Resources"), "logo-produit.png"));
+
+         var leftMargin = htmlToPdfConverter.PdfDocumentOptions.LeftMargin;
+         var rightMargin = htmlToPdfConverter.PdfDocumentOptions.RightMargin;
+         var topMargin = htmlToPdfConverter.PdfDocumentOptions.TopMargin;
+
+         // Ligne 1 : les logos
+         float x = leftMargin, y = topMargin;
+         float destWidth = 150, destHeight = 40;
+         var pdfWidth = htmlToPdfConverter.PdfDocumentOptions.PdfPageSize.Width;
+         htmlToPdfConverter.PdfHeaderOptions.AddElement(new ImageElement(x, y, destWidth, destHeight, true, logoClient));
+         x = pdfWidth - destWidth - rightMargin;
+         htmlToPdfConverter.PdfHeaderOptions.AddElement(new ImageElement(x, y, destWidth, destHeight, true, logoProduit));
+
+         // Ligne 2 : le titre
+         x = leftMargin;
+         y = y + destHeight + 10;
+
+         var textTitre = new TextElement(x, y, "Connexion des appareils - Pays de la Loire", new Font(new FontFamily("Arial"), 18, FontStyle.Bold, GraphicsUnit.Point));
+         textTitre.TextAlign = HorizontalTextAlign.Center;
+         htmlToPdfConverter.PdfHeaderOptions.AddElement(textTitre);
+
+         // Ligne 3 : la période d'analyse
+         y = y + 20 + 20; // ajout de la hauteur du texte + espace interligne
+         var textPeriode = new TextElement(x, y, "Période du 18/11/2019 au 23/11/2019", new Font(new FontFamily("Arial"), 12, GraphicsUnit.Point));
+         textPeriode.TextAlign = HorizontalTextAlign.Center;
+         htmlToPdfConverter.PdfHeaderOptions.AddElement(textPeriode);
+
+         htmlToPdfConverter.PdfHeaderOptions.HeaderHeight = y + 60;
+
+         // Header line
+         float documentWidth = pdfWidth - leftMargin - rightMargin;
+         LineElement headerLine = new LineElement(x, htmlToPdfConverter.PdfHeaderOptions.HeaderHeight - 20, documentWidth, htmlToPdfConverter.PdfHeaderOptions.HeaderHeight - 20);
+         headerLine.ForeColor = Color.Gray;
+         htmlToPdfConverter.PdfHeaderOptions.AddElement(headerLine);
+      }
+
+      static void NavigationCompletedEvent(NavigationCompletedParams eventParams)
+      {
+         // Get the header HTML width and height from event parameters
+         float headerHtmlWidth = eventParams.HtmlContentWidthPt;
+         float headerHtmlHeight = eventParams.HtmlContentHeightPt;
+
+         // Calculate the header width from coverter settings
+         float headerWidth = _htmlToPdfConverter.PdfDocumentOptions.PdfPageSize.Width - _htmlToPdfConverter.PdfDocumentOptions.LeftMargin -
+                     _htmlToPdfConverter.PdfDocumentOptions.RightMargin;
+
+         // Calculate a resize factor to fit the header width
+         float resizeFactor = 1;
+         if (headerHtmlWidth > headerWidth)
+            resizeFactor = headerWidth / headerHtmlWidth;
+
+         // Calculate the header height to preserve the HTML aspect ratio
+         float headerHeight = headerHtmlHeight * resizeFactor;
+
+         if (!(headerHeight < _htmlToPdfConverter.PdfDocumentOptions.PdfPageSize.Height - _htmlToPdfConverter.PdfDocumentOptions.TopMargin -
+                     _htmlToPdfConverter.PdfDocumentOptions.BottomMargin))
+         {
+            throw new Exception("The header height cannot be bigger than PDF page height");
+         }
+
+         // Set the calculated header height
+         _htmlToPdfConverter.PdfDocumentOptions.DocumentObject.Header.Height = headerHeight + 20;
+      }
+
+
+      static void AddHtmlHeader(HtmlToPdfConverter htmlToPdfConverter)
+      {
+         _htmlToPdfConverter = htmlToPdfConverter;
+
+         var outputDir = Path.GetFullPath(@"..\..\");
+         string headerHtmlUrl = Path.Combine(outputDir, "header.html");
+
+         // Enable header in the generated PDF document
+         htmlToPdfConverter.PdfDocumentOptions.ShowHeader = true;
+
+         // Set the header height in points
+         //htmlToPdfConverter.PdfHeaderOptions.HeaderHeight = 120;
+
+         // Set header background color
+         htmlToPdfConverter.PdfHeaderOptions.HeaderBackColor = Color.White;
+
+         // Create a HTML element to be added in header
+         HtmlToPdfElement headerHtml = new HtmlToPdfElement(headerHtmlUrl);
+
+         headerHtml.NavigationCompletedEvent += NavigationCompletedEvent;
+
+         // Set the HTML element to fit the container height
+         //headerHtml.FitHeight = true;
+
+         //headerHtml.FitWidth = true;
+         //headerHtml.StretchToFit = true;
+
+         // Add HTML element to header
+         htmlToPdfConverter.PdfHeaderOptions.AddElement(headerHtml);
+      }
+
+      static void AddHtmlTextHeader(HtmlToPdfConverter converter)
+      {
+         converter.PdfDocumentOptions.ShowHeader = true;
+         converter.PdfHeaderOptions.HeaderBackColor = Color.White;
+
+         var headerBuilder = new StringBuilder();
+         headerBuilder.Append("<!DOCTYPE HTML>");
+         headerBuilder.Append("<html>");
+         headerBuilder.Append("<head>");
+
       }
 
       // Get the pdf converter configured with the seal report parameters of the seal designer

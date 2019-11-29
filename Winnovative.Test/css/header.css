@@ -1,0 +1,53 @@
+
+body {
+  padding-top: 5px;
+}
+
+
+/* to help to debug
+[class*="col-"], footer {
+  background-color: lightgreen;
+  border: 2px solid black;  
+}
+*/
+
+.img-thumbnail {
+padding: 0;
+border: 0;
+}
+
+div.horizontal-logos {
+    display: flex;
+	line-height: 30px;
+	text-align: center;
+}
+
+div.horizontal-text {
+    display: flex;
+	line-height: 20px;
+	text-align: center;
+}
+
+div.vertical-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div.vertical-justify {
+    display: flex;
+    flex-direction: column;
+    justify-content: justify;
+}
+
+div.vertical-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+div.vertical-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+}
